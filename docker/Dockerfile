@@ -1,11 +1,6 @@
-# WebMap
-# -
-# https://github.com/SabyasachiRana/WebMap
-# Author: SabyasachiRana
-# -
 # Usage:
 #   $ cd /opt
-#   $ git clone https://github.com/SabyasachiRana/WebMap.git
+#   $ git clone https://github.com/Watskip/WebMap.git
 #   $ cd WebMap/docker
 #   $ docker build -t webmap:latest .
 #   $ docker run -d -v /opt/WebMap/docker/xml:/opt/xml -p 8000:8000 webmap:latest
@@ -29,7 +24,7 @@ RUN mkdir /opt/xml && mkdir /opt/notes && \
 
 RUN pip3 install --break-system-packages Django requests xmltodict && \
     cd /opt/ && django-admin startproject nmapdashboard && cd /opt/nmapdashboard && \
-    git clone https://github.com/SabyasachiRana/WebMap.git nmapreport && \
+    git clone https://github.com/Watskip/WebMap.git nmapreport && \
     cd nmapreport && git checkout master
 
 RUN cp /opt/nmapdashboard/nmapreport/docker/settings.py /opt/nmapdashboard/nmapdashboard/
