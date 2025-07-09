@@ -3,6 +3,8 @@ from django.http import HttpResponse
 import xmltodict, json, html, os, hashlib, re, urllib.parse, base64
 from collections import OrderedDict
 from nmapreport.functions import *
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 def login(request):
 	r = {}
@@ -828,3 +830,27 @@ def about(request):
 		r['auth'] = True
 
 	return render(request, 'nmapreport/nmap_about.html', r)
+
+@csrf_exempt
+def upload_xml(request):
+    if request.method == 'POST' and request.FILES.get('file'):
+        xml_file = request.FILES['file']
+        if not xml_file.name.lower().endswith('.xml'):
+            return JsonResponse({'success': False, 'error': 'Only XML files are allowed.'}, status=400)
+        import os
+        base_path = '/opt/xml/'
+        base_name = os.path.splitext(xml_file.name)[0]
+        ext = os.path.splitext(xml_file.name)[1]
+        save_name = xml_file.name
+        counter = 1
+        while os.path.exists(os.path.join(base_path, save_name)):
+            save_name = f"{base_name}_{counter}{ext}"
+            counter += 1
+        try:
+            with open(os.path.join(base_path, save_name), 'wb+') as destination:
+                for chunk in xml_file.chunks():
+                    destination.write(chunk)
+            return JsonResponse({'success': True, 'filename': save_name})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    return JsonResponse({'success': False, 'error': 'No file uploaded.'}, status=400)

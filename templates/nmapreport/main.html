@@ -210,6 +210,8 @@
 		<li><i class="material-icons">track_changes</i> <a href="/setscanfile/unset">Show all nmap scan</a></li>
 		<li><i class="material-icons">settings_input_antenna</i> <a href="/">Show scan details</a></li>
 		<li><i class="material-icons">add_box</i> <a href="#!" onclick="javascript:newscan();">New Nmap scan</a></li>
+		<li><i class="material-icons">file_upload</i> <a href="#" id="upload-xml-btn">Upload XML</a></li>
+		<input type="file" id="upload-xml-input" accept=".xml" style="display:none;" />
 		{% if scanfile %}
 			<li><i class="fas fa-file-pdf" style="margin-left:2px;font-size:20px;"></i> <a href="#!" onclick="javascript:genPDF('{{ scanmd5 }}');">PDF Report</a></li>
 			<li><i class="fas fa-bug" style="margin-left:2px;font-size:20px;"></i> <a href="#!" onclick="javascript:checkCVE();">Check CVE</a></li>
@@ -288,6 +290,17 @@
 			$('.sidenav').sidenav();
 			$('.modal').modal();
 			$('.tabs').tabs();
+			$('#upload-xml-btn').click(function(e) {
+				e.preventDefault();
+				$('#upload-xml-input').click();
+			});
+			$('#upload-xml-input').change(function(e) {
+				var file = this.files[0];
+				if (!file) return;
+				// TODO: Implement AJAX upload to backend
+				// Placeholder for upload logic
+				swal('Uploading...', 'Your XML file will be uploaded.', 'info');
+			});
 		});
 
 	</script>

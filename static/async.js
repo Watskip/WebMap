@@ -85,6 +85,33 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#upload-xml-input').change(function(e) {
+    var file = this.files[0];
+    if (!file) return;
+    if (!file.name.toLowerCase().endsWith('.xml')) {
+        swal('Error', 'Only XML files are allowed.', 'error');
+        return;
+    }
+    var formData = new FormData();
+    formData.append('file', file);
+    swal({title: 'Uploading...', text: 'Please wait.', icon: 'info', buttons: false, closeOnClickOutside: false});
+    $.ajax({
+        url: '/api/upload_xml/',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            swal('Success', 'XML file uploaded successfully.', 'success').then(function(){ location.reload(); });
+        },
+        error: function(xhr) {
+            var msg = 'Upload failed.';
+            if (xhr.responseJSON && xhr.responseJSON.error) msg = xhr.responseJSON.error;
+            swal('Error', msg, 'error');
+        }
+    });
+});
+
 });
 
 function checkActiveScan() {
