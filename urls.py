@@ -25,5 +25,5 @@ urlpatterns = [
 	path('view/pdf/', pdf.reportPDFView, name='reportPDFView'),
 	path('view/network/', network.visjs, name='network_view'),
 	path('view/ndiff/<f1>/<f2>', views.scan_diff, name='ndiffview'),
-	path('api/v1/token/new', api.apiv1_token_new, name='apiv1_token_new'),
+	path('api/v1/token/new', api.apiv1_token_new, name='apiv1_token_new')
 ]
