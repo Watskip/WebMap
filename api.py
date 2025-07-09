@@ -355,3 +355,13 @@ def apiv1_scan(request):
 
 	return HttpResponse(json.dumps(r, indent=4), content_type="application/json")
 
+def apiv1_token_new(request):
+	import string, hashlib
+	from random import choice, randint
+	allchar = string.ascii_letters + string.digits
+	password = "".join(choice(allchar) for x in range(12))
+	tokenhash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+	with open('/root/token.sha256', 'w') as f:
+		f.write(tokenhash)
+	return HttpResponse(json.dumps({'token': password}), content_type="application/json")
+
